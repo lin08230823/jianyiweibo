@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from app import urls as wb_urls
+
+from .views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('weibo/', include(wb_urls))
+    path('weibo/', include('app.urls',namespace='wb')),
+    path('account/',include('account.urls',namespace='account')),
+    path('',index,name='index')
 ]

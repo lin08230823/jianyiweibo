@@ -1,7 +1,8 @@
 
 from django.urls import path
-from .views import root
-
+from .views import homepage
+app_name = 'weibo'
 urlpatterns = [
-    path('', root, name='root')
+    path('', homepage, name='homepage'),
+
 ]
