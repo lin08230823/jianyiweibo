@@ -28,6 +28,10 @@ class WBUser(User):
     def save_user_info(self, info: dict):
         self._info = json.dumps(info)
         self.save()
+    def update(self, msg):
+        wbt = WBText.objects.create(author=self, msg=msg )
+        wb = WeiBo.objects.create(user=self, text=wbt)
+        return wb
 
     def follow(self, user:'WBUser'):
 

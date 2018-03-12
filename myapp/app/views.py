@@ -21,6 +21,12 @@ def user_page(request):
         'wb_user': wb_user
     })
 
-
+def wb_update(request):
+    wb_user = get_object_or_404(WBUser, id=request.user.id)
+    msg = request.POST.get('msg')
+    wb = wb_user.update(msg)
+    return HttpResponse(render(request, 'weibo/new_wb.html',{
+        'wb':wb
+    }))
 
 
