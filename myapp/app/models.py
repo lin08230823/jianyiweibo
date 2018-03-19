@@ -40,8 +40,8 @@ class WBUser(User):
         self.followers.add(user)
         self.save()
 
-    def forward(self, weibo: 'WeiBo'):
-        return WeiBo.objects.create(user=self, weibo_text=weibo.weibo_text)
+    def forward(self, wb: 'WeiBo'):
+        return WeiBo.objects.create(user=self, text=wb.text)
 
 
     def __str__(self):

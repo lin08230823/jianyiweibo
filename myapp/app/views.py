@@ -40,3 +40,12 @@ def wb_comment(request):
     return HttpResponse(render(request, 'weibo/new_comm.html',{
         'comm': comment
     }))
+
+def wb_forward(request):
+    wb_user = get_object_or_404(WBUser, id=request.user.id)
+    msg = request.POST.get('msg')
+    wid = request.POST.get('wid')
+    wb = get_object_or_404(WeiBo, id=wid)
+    new_wb = wb_user.forward(wb)
+    if msg:
+        new_wb.comment_this(user=wb_user, test)
