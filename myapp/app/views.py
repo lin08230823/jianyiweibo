@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import WBUser,WeiBo
@@ -48,4 +48,7 @@ def wb_forward(request):
     wb = get_object_or_404(WeiBo, id=wid)
     new_wb = wb_user.forward(wb)
     if msg:
-        new_wb.comment_this(user=wb_user, test)
+        new_wb.comment_this(user=wb_user, text=msg)
+    response = redirect('wb:upage')
+    response['Location']+='?uid={uid}'.format(uid=wb_user.id)
+    return response
