@@ -38,7 +38,10 @@ class WBUser(User):
     def follow(self, user:'WBUser'):
 
         self.followers.add(user)
-        self.save()
+
+    def unfollow(self, user: 'WBUser'):
+
+        self.followers.remove(user)
 
     def forward(self, wb: 'WeiBo'):
         return WeiBo.objects.create(user=self, text=wb.text)
