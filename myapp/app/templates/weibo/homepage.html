@@ -1,5 +1,5 @@
 {% extends 'base_page.html' %}
-{% block title %}个人主页{% endblock %}
+{% block title %}个人中心{% endblock %}
 {% block left_more %}
 <hr />
 <div class='list-group'>
@@ -9,11 +9,23 @@
 {% endblock %}
 {% block right %}
 <div class="jumbotron">
-  <h1>欢迎回来 {{ wb_user.name }}</h1>
-  <p>个性签名...</p>
+  <h1>{{ user.name }} <small>欢迎回来</small></h1>
+  <p><small>个性签名...</small></p>
   <p><a class="btn btn-primary btn-lg" href="#" role="button">修改资料</a></p>
 </div>
-<div id='info_list'>
+<div class="hidden wb_list">
+	<h1>我的最新微博</h1>
+	<hr />
+	<div class="wb_list_body" id='wb_update_list'></div>
+</div>
+<div class='wb_list'>
+	<h1>最新好友微博</h1>
+	<hr />
+	<div class="wb_list_body">
+	{% for wb in wbs %}
+		{% include "weibo\list_wb.html" %}
+	{% endfor %}
+	</div>
 </div>
 {% endblock %}
 {% block modal %}
@@ -36,10 +48,13 @@
 		</div>
 	</div>
 </div>
+
+{% include "weibo\forward_modal.html" %}
 {% endblock %}
 {% block script %}
 <script>
 function wb_update(){
+	// 更新微博
 	document.getElementById('wb_update_form').onsubmit = function(e){
 		e.preventDefault();
 		var f = e.target,
@@ -49,15 +64,19 @@ function wb_update(){
 		xhr.onreadystatechange=function(){
 			if(xhr.readyState == 4 && xhr.status == 200){
 				var dataReply = xhr.responseText,
-					para = document.getElementById('info_list'),
+					para = document.getElementById('wb_update_list'),
+					pp_attr = para.parentElement.getAttribute('class'),
 					newBox = document.createElement('div');
 				para.insertBefore(newBox, para.firstChild);
 				newBox.innerHTML = dataReply;
+				para.parentElement.setAttribute('class', pp_attr.replace('hidden', ''));
 			};
 		};
 		xhr.send(formData);
 		$('#wb_update_modal').modal('hide');
 	};
 };
+
+{% include "weibo\page_js.html" %}
 </script>
 {% endblock %}
